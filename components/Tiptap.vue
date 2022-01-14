@@ -1,7 +1,9 @@
 <template>
   <div>
+    <!-- this code load only on the browser side -->
     <client-only>
       <v-card class="rich-text-section" flat>
+        <!-- this is the main tool bar for the rich text editor -->
         <v-toolbar v-if="editor">
           <v-spacer class="d-none d-lg-block" />
           <v-btn
@@ -16,11 +18,7 @@
           <v-btn
             icon
             append
-            :class="
-              editor.isActive({ textAlign: 'center' })
-                ? 'v-btn--active ml-1 mr-1'
-                : 'ml-1 mr-1'
-            "
+            :class="editor.isActive({ textAlign: 'center' }) ? 'v-btn--active ml-1 mr-1' : 'ml-1 mr-1'"
             title="Centrado"
             @click="editor.chain().focus().setTextAlign('center').run()"
           >
@@ -29,11 +27,7 @@
           <v-btn
             icon
             append
-            :class="
-              editor.isActive({ textAlign: 'right' })
-                ? 'v-btn--active ml-1 mr-1'
-                : 'ml-1 mr-1'
-            "
+            :class="editor.isActive({ textAlign: 'right' }) ? 'v-btn--active ml-1 mr-1' : 'ml-1 mr-1'"
             title="Derecha"
             @click="editor.chain().focus().setTextAlign('right').run()"
           >
@@ -42,11 +36,7 @@
           <v-btn
             icon
             append
-            :class="
-              editor.isActive({ textAlign: 'justify' })
-                ? 'v-btn--active ml-1 mr-1'
-                : 'ml-1 mr-1'
-            "
+            :class="editor.isActive({ textAlign: 'justify' }) ? 'v-btn--active ml-1 mr-1' : 'ml-1 mr-1'"
             title="Justificado"
             @click="editor.chain().focus().setTextAlign('justify').run()"
           >
@@ -97,11 +87,7 @@
           <v-btn
             icon
             append
-            :class="
-              editor.isActive('heading', { level: 1 })
-                ? 'v-btn--active ml-1 mr-1'
-                : 'ml-1 mr-1'
-            "
+            :class="editor.isActive('heading', { level: 1 }) ? 'v-btn--active ml-1 mr-1' : 'ml-1 mr-1'"
             title="Título 1"
             @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
           >
@@ -110,11 +96,7 @@
           <v-btn
             icon
             append
-            :class="
-              editor.isActive('heading', { level: 2 })
-                ? 'v-btn--active ml-1 mr-1'
-                : 'ml-1 mr-1'
-            "
+            :class="editor.isActive('heading', { level: 2 }) ? 'v-btn--active ml-1 mr-1' : 'ml-1 mr-1'"
             title="Título 2"
             @click="editor.chain().focus().toggleHeading({ level: 2 }).run()"
           >
@@ -123,11 +105,7 @@
           <v-btn
             icon
             append
-            :class="
-              editor.isActive('heading', { level: 3 })
-                ? 'v-btn--active ml-1 mr-1'
-                : 'ml-1 mr-1'
-            "
+            :class="editor.isActive('heading', { level: 3 }) ? 'v-btn--active ml-1 mr-1' : 'ml-1 mr-1'"
             title="Título 3"
             @click="editor.chain().focus().toggleHeading({ level: 3 }).run()"
           >
@@ -136,11 +114,7 @@
           <v-btn
             icon
             append
-            :class="
-              editor.isActive('blockquote')
-                ? 'v-btn--active ml-1 mr-1'
-                : 'ml-1 mr-1'
-            "
+            :class="editor.isActive('blockquote') ? 'v-btn--active ml-1 mr-1' : 'ml-1 mr-1'"
             title="Cita"
             @click="editor.chain().focus().toggleBlockquote().run()"
           >
@@ -149,11 +123,7 @@
           <v-btn
             icon
             append
-            :class="
-              editor.isActive('bulletList')
-                ? 'v-btn--active ml-1 mr-1'
-                : 'ml-1 mr-1'
-            "
+            :class="editor.isActive('bulletList') ? 'v-btn--active ml-1 mr-1': 'ml-1 mr-1'"
             title="Lista"
             @click="editor.chain().focus().toggleBulletList().run()"
           >
@@ -162,11 +132,7 @@
           <v-btn
             icon
             append
-            :class="
-              editor.isActive('orderedList')
-                ? 'v-btn--active ml-1 mr-1'
-                : 'ml-1 mr-1'
-            "
+            :class="editor.isActive('orderedList')? 'v-btn--active ml-1 mr-1' : 'ml-1 mr-1'"
             title="Lista ordenada"
             @click="editor.chain().focus().toggleOrderedList().run()"
           >
@@ -201,10 +167,85 @@
           </v-btn>
           <v-spacer class="d-none d-lg-block" />
         </v-toolbar>
+        <!-- editor counter -->
+        <v-toolbar v-if="editor" flat>
+          <v-spacer />
+          <p class="text-center overline">
+            {{ 'Documento con ' + editor.storage.characterCount.characters() + ' caracteres' }}
+            {{ ' y ' + editor.storage.characterCount.words() + ' palabras' }}
+          </p>
+          <v-spacer />
+        </v-toolbar>
+        <!-- bubble menu for the editor -->
+        <bubble-menu
+          v-if="editor"
+          class="bubble-menu"
+          :tippy-options="{ duration: 100 }"
+          :editor="editor"
+        >
+          <v-btn
+            icon
+            append
+            :class="editor.isActive('bold') ? 'v-btn--active ml-1 mr-1' : 'ml-1 mr-1'"
+            title="Negrita"
+            @click="editor.chain().focus().toggleBold().run()"
+          >
+            <v-icon>mdi-format-bold</v-icon>
+          </v-btn>
+          <v-btn
+            icon
+            append
+            :class="
+              editor.isActive('italic') ? 'v-btn--active ml-1 mr-1' : 'ml-1 mr-1'
+            "
+            title="Cursiva"
+            @click="editor.chain().focus().toggleItalic().run()"
+          >
+            <v-icon>mdi-format-italic</v-icon>
+          </v-btn>
+          <v-btn
+            icon
+            append
+            :class="editor.isActive('heading', { level: 1 }) ? 'v-btn--active ml-1 mr-1' : 'ml-1 mr-1'"
+            title="Título 1"
+            @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
+          >
+            <v-icon>mdi-format-header-1</v-icon>
+          </v-btn>
+          <v-btn
+            icon
+            append
+            :class="editor.isActive('heading', { level: 2 }) ? 'v-btn--active ml-1 mr-1' : 'ml-1 mr-1'"
+            title="Título 2"
+            @click="editor.chain().focus().toggleHeading({ level: 2 }).run()"
+          >
+            <v-icon>mdi-format-header-2</v-icon>
+          </v-btn>
+          <v-btn
+            icon
+            append
+            :class="editor.isActive('heading', { level: 3 }) ? 'v-btn--active ml-1 mr-1' : 'ml-1 mr-1'"
+            title="Título 3"
+            @click="editor.chain().focus().toggleHeading({ level: 3 }).run()"
+          >
+            <v-icon>mdi-format-header-3</v-icon>
+          </v-btn>
+          <v-btn
+            icon
+            append
+            :class="editor.isActive('link') ? 'v-btn--active ml-1 mr-1' : 'ml-1 mr-1'"
+            title="Enlace"
+            @click="editor.isActive('link') ? editor.commands.unsetLink() : addLink()"
+          >
+            <v-icon>mdi-open-in-new</v-icon>
+          </v-btn>
+        </bubble-menu>
+        <!-- editor -->
         <v-container class="editor">
           <editor-content :editor="editor" />
         </v-container>
       </v-card>
+      <!-- add link dialog box -->
       <v-dialog v-model="linkModal" persistent max-width="550px">
         <v-card>
           <v-card-title>
@@ -251,6 +292,7 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+      <!-- add image dialog box -->
       <v-dialog v-model="imageModal" persistent max-width="550px">
         <v-card>
           <v-card-title>
@@ -303,17 +345,18 @@
 
 <script>
 /* eslint-disable import/no-named-as-default */
-import { Editor, EditorContent } from '@tiptap/vue-2'
+import { Editor, EditorContent, BubbleMenu } from '@tiptap/vue-2'
 import StarterKit from '@tiptap/starter-kit'
 import TextAlign from '@tiptap/extension-text-align'
 import Link from '@tiptap/extension-link'
 import Image from '@tiptap/extension-image'
-import Dropcursor from '@tiptap/extension-dropcursor'
+import CharacterCount from '@tiptap/extension-character-count'
 
 export default {
   name: 'TipTap',
   components: {
     EditorContent,
+    BubbleMenu,
   },
 
   props: {
@@ -344,7 +387,7 @@ export default {
       this.editor.commands.setContent(value, false)
     },
   },
-
+  // mount the editor
   mounted() {
     this.editor = new Editor({
       parseOptions: {
@@ -363,21 +406,23 @@ export default {
         Image.configure({
           inline: true,
         }),
-        Dropcursor,
+        CharacterCount,
       ],
       onUpdate: () => {
         this.$emit('input', this.editor.getHTML())
       },
     })
   },
-
+  // destroy the editor
   beforeDestroy() {
     this.editor.destroy()
   },
   methods: {
+    // open add link dialog box
     addLink() {
       this.linkModal = true
     },
+    // add link to editor
     addLinkToEditor() {
       if (this.$refs.linkForm.validate()) {
         this.editor.commands.setLink({
@@ -389,9 +434,11 @@ export default {
         this.$refs.linkForm.reset()
       }
     },
+    // open add image dialog box
     addImage() {
       this.imageModal = true
     },
+    // add image to editor
     addImageToEditor() {
       if (this.$refs.imageForm.validate()) {
         this.editor.chain().focus().setImage({ src: this.linkToAdd }).run()
@@ -425,5 +472,11 @@ export default {
 }
 .card-center-title {
   width: 100%;
+}
+.bubble-menu {
+  display: flex;
+  background-color: #0d0d0d;
+  padding: 0.2rem;
+  border-radius: 0.5rem;
 }
 </style>

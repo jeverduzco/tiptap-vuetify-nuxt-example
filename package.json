@@ -13,6 +13,7 @@
     "lintfix": "prettier --write --list-different . && npm run lint:js -- --fix"
   },
   "dependencies": {
+    "@tiptap/extension-character-count": "^2.0.0-beta.24",
     "@tiptap/extension-dropcursor": "^2.0.0-beta.25",
     "@tiptap/extension-image": "^2.0.0-beta.24",
     "@tiptap/extension-link": "^2.0.0-beta.35",
